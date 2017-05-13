@@ -1,0 +1,165 @@
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<html>
+    <head>
+        <title>Word Suggester</title>
+        <script src="js/jquery.min.js"></script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="D:\projeCT\GWord_Suggester\web\js\jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.1/css/font-awesome.min.css" />
+
+        <style>
+            div{
+                width:30%;
+                height:400px;
+                margin-left: 35%;                
+                margin-top: 10%;
+                border: 1px solid black;
+
+            }
+
+            #div0
+            {
+                height: 200px;
+                margin-top: 205px;
+                margin-left: 0px;
+                width: 100%;
+                background-image: url("ws.png");
+                background-repeat:no-repeat;
+                background-size:contain;
+                background-position: 0px bottom;
+
+            }
+            .div1 {
+                float: left;
+                width: 33%;
+                height: 31px;
+                margin: 0px;
+                border: 1px solid black;
+            }
+
+            .div2 {
+                float: left;
+                width: 33%;
+                height: 31px;
+                margin: 0px;
+                border: 1px solid black;
+            }
+
+            .div3 {
+                float: left;
+                width: 32.5%;
+                height: 31px;
+                margin: 0px;
+                border: 1px solid black;
+            }
+            #TB{
+                min-width: 403px;
+                max-width: 300px;
+                padding: 2px; 
+                margin-left: 0px;
+                height: 25px;
+            }
+
+        </style>
+
+    </head>
+    <body>
+        <div>
+            <p> asasdsd</p>
+            <div id="div0">
+
+                <div class="div1" id="pre1"></div>
+                <div class="div2" id="pre2"></div>
+
+                <div class="div3" id="pre3"></div>
+
+                <input type="text" id="TB" placeholder="Type your query here..">
+
+            </div>
+        </div>
+        <script>
+            var word;
+            var arr;
+            $('#TB').keyup(function (e) {
+
+                function test(words) {
+                    var n = words.split(" ");
+                    return n[n.length - 1];
+                }
+                var response = "";
+
+                word = $("#TB").val();
+                word = test(word);
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        response = this.responseText;
+                        //  alert(response);
+                        arr = response.split(",");
+
+                        document.getElementById("pre2").innerHTML = arr[0];
+                        document.getElementById("pre1").innerHTML = arr[1];
+                        document.getElementById("pre3").innerHTML = arr[2];
+                        
+
+                    }
+                };
+                xhttp.open("GET", "word_suggest?w=" + word, true);
+                xhttp.send();
+
+            });
+
+            $('#TB').keydown(function (e) {
+                if (e.ctrlKey && e.keyCode === 32) {
+                    var cur = document.getElementById('TB').value;
+                    cur = cur.replace(word, arr[0]);
+                    $('#TB').val(cur);
+                    document.getElementById('TB').innerHTML = "";
+                    $("#TB").focus();
+                }
+            });
+
+
+            $(document).ready(function (e) {
+                
+                $('#pre2').click(function ()
+                {
+                    var cur = document.getElementById('TB').value;
+                    cur = cur.replace(word, arr[0]);
+                    $('#TB').val(cur);
+                    document.getElementById('TB').innerHTML = "";
+                    $("#TB").focus();
+
+                });
+
+                $('#pre1').click(function ()
+                {
+                    var cur = document.getElementById('TB').value;
+                    cur = cur.replace(word, arr[1]);
+                    $('#TB').val(cur);
+                    document.getElementById('TB').innerHTML = "";
+                    $("#TB").focus();
+
+                });
+
+                $('#pre3').click(function ()
+                {
+                    var cur = document.getElementById('TB').value;
+                    cur = cur.replace(word, arr[2]);
+                    $('#TB').val(cur);
+                    document.getElementById('TB').innerHTML = "";
+                    $("#TB").focus();
+
+                });
+
+            });
+        </script>
+    </body>
+</html>
